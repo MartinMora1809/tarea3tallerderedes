@@ -5,35 +5,17 @@ Este proyecto demuestra cómo realizar inyecciones TCP en conexiones PostgreSQL 
 
 ## Contexto Técnico
 
-Se utiliza la librería de python **scapy**
-
-- **Estructura de mensajes**:
-
-- Byte de tipo (ej: `Q`=Query, `R`=Autenticación)
-
-- Longitud (4 bytes)
-
-- Cuerpo con datos (consultas, parámetros)
-
-- **Flujo de comunicación**:
-
-1. Startup Message (inicio de sesión)
-
-2. Autenticación (métodos: SCRAM-SHA-256, TLS, etc.)
-
-3. Parameter Status (configuración)
-
-4. Ejecución de consultas (`Q` → `T`/`D`/`C`)
-
-5. Finalización (`X`)
-
-## Configuración del Entorno
+Scapy es una potente biblioteca Python para manipulación de paquetes de red. En este proyecto, utilizamos Scapy para construir y enviar paquetes TCP personalizados que inyectan comandos SQL en conexiones PostgreSQL existentes.
 
 ### Requisitos
 
 - 2 máquinas virtuales Ubuntu
 
 - Docker instalado en ambos sistemas
+  
+- python3
+  
+- scapy
 
 ```bash
 
@@ -46,6 +28,10 @@ sudo apt install docker.io
 sudo systemctl enable docker
 
 sudo systemctl start docker
+
+sudo apt install python3
+
+sudo pip install scapy
 
 ```
 
@@ -85,7 +71,7 @@ sudo docker ps
 
 ```bash
 
-ping 172.16.30.83
+ping 192.168.1.90
 
 ```
 
@@ -95,7 +81,7 @@ ping 172.16.30.83
 
 docker run -it --rm postgres psql \
 
--h 172.16.30.83 \
+-h 192.168.1.90 \
 
 -U carlostarea2 \
 
@@ -105,14 +91,6 @@ docker run -it --rm postgres psql \
 
 *Ingresar contraseña cuando se solicite*
 
-## Instalación scapy
-
-
-```bash
-
-pip install scapy
-
-```
 ## Expulsar usuario
 Este script genera trafico basura dirigido al servidor para forzar la desconexión del cliente
 ```bash
